@@ -1,82 +1,93 @@
-# 🇮🇩 Indonesia Inflation Forecasting
+# 🇮🇩 Indonesia Inflation Forecasting — Macroeconomic Scraper & Predictor
 
-Proyek ini bertujuan untuk membangun sistem peramalan (forecasting) inflasi di Indonesia menggunakan berbagai sumber data ekonomi makro. Sistem ini mencakup seluruh siklus data mulai dari scraping, pembersihan, rekayasa fitur (feature engineering), hingga pemodelan menggunakan metode statistik dan machine learning.
+[![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Framework: Statsmodels](https://img.shields.io/badge/Forecasting-SARIMA-green.svg)](https://www.statsmodels.org/)
+[![Framework: XGBoost](https://img.shields.io/badge/ML-XGBoost-orange.svg)](https://xgboost.readthedocs.io/)
 
-## 🚀 Fitur Utama
-- **Automated Scraping**: Mengambil data dari IMF, FRED (Federal Reserve), dan TradingEconomics.
-- **Economic Feature Engineering**: Transformasi data makro menjadi fitur prediktif (Lags, Rolling Stats, Seasonal Flags seperti Ramadan/Lebaran).
-- **Hybrid Modelling**: Perbandingan model statistik klasik (SARIMA) dengan model Machine Learning (XGBoost/LightGBM).
+Proyek ini adalah sistem end-to-end untuk mengambil, memproses, dan memprediksi tingkat inflasi di Indonesia menggunakan data ekonomi makro global dan domestik.
 
-## 📁 Struktur Proyek
-```text
-indonesia-inflation-forecast/
-├── data/
-│   ├── raw/               # Data mentah hasil scraping
-│   ├── processed/         # Data hasil pembersihan & merge
-│   └── features/          # Data siap latih (setelah engineering)
-├── notebooks/
-│   ├── 01_scraping.ipynb
-│   ├── 02_eda.ipynb
-│   ├── 03_feature_engineering.ipynb
-│   └── 04_modelling.ipynb
-├── src/
-│   ├── scraper/           # Skrip pengambil data modular
-│   ├── pipeline/          # Pipeline pemrosesan data
-│   └── models/            # Implementasi model forecasting
-├── run_all.py             # Skrip runner untuk seluruh alur
-├── requirements.txt       # Dependensi proyek
-└── .env                   # Konfigurasi API Keys (FRED_API_KEY)
+---
+
+## 🏛️ Arsitektur Proyek
+Sesuai dengan blueprint desain, proyek ini dibagi menjadi beberapa lapisan modular:
+
+### 1. Lapisan Data (`/data`)
+- **Raw**: Data mentah dari API FRED, IMF, dan TradingEconomics.
+- **Processed**: Hasil penggabungan (outer join) dan normalisasi deret waktu.
+- **Features**: Dataset akhir dengan fitur teknis (Lags, Differencing, Seasonal Flags).
+
+### 2. Lapisan Logika (`/src`)
+- **Scraper**: Implementasi REST API dan Web Scraping modular.
+- **Pipeline**: Automasi pembersihan data dan rekayasa fitur otomatis.
+- **Models**: Implementasi model SARIMA sebagai baseline dan XGBoost sebagai model tingkat lanjut.
+
+### 3. Lapisan Eksplorasi (`/notebooks`)
+- Alur kerja langkah-demi-langkah dari ekstraksi data hingga evaluasi model.
+
+---
+
+## 🛠️ Persiapan & Instalasi
+
+### 1. Lingkungan Virtual
+```bash
+python -m venv venv
+source venv/bin/activate
 ```
 
-## 🛠️ Instalasi
+### 2. Instalasi Dependensi
+```bash
+pip install -r requirements.txt
+```
 
-1. Clone repositori ini:
-   ```bash
-   git clone https://github.com/username/indonesia-inflation-forecast.git
-   cd indonesia-inflation-forecast
-   ```
+### 3. Konfigurasi API
+Buat file `.env` dan masukkan API Key dari [FRED](https://fred.stlouisfed.org/docs/api/api_key.html):
+```env
+FRED_API_KEY=your_actual_key_here
+```
 
-2. Buat dan aktifkan virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Linux/macOS
-   # venv\Scripts\activate  # Windows
-   ```
+---
 
-3. Instal dependensi:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## 🚀 Cara Menjalankan
 
-4. Konfigurasi API Key:
-   Buat file `.env` di root direktori dan masukkan FRED API Key Anda:
-   ```text
-   FRED_API_KEY=isi_dengan_api_key_fred_anda
-   ```
-
-## 📈 Cara Penggunaan
-
-### Menjalankan Seluruh Alur
-Anda dapat menjalankan pengambilan data hingga pemodelan baseline dengan satu perintah:
+### **Opsi A: Alur Otomatis**
+Jalankan seluruh pipeline dari awal hingga akhir (Scrape -> Clean -> Feature -> Model):
 ```bash
 python run_all.py
 ```
 
-### Eksplorasi via Notebook
-Gunakan notebook yang tersedia untuk analisis lebih mendalam:
+### **Opsi B: Eksplorasi Manual**
+Buka Jupyter Lab untuk melihat analisis data secara interaktif:
 ```bash
-jupyter lab notebooks/02_eda.ipynb
+jupyter lab
 ```
+Urutan pengerjaan:
+1. `01_scraping.ipynb`
+2. `02_eda.ipynb`
+3. `03_feature_engineering.ipynb`
+4. `04_modelling.ipynb`
 
-## 📊 Metrik Baseline (SARIMA)
+---
+
+## 📊 Analisis & Metrik
+Sistem ini menggunakan fitur khusus ekonomi Indonesia:
+- **Ramadan Effect**: Menangkap lonjakan musiman saat bulan puasa.
+- **Imported Inflation**: Melacak pengaruh kurs USD/IDR terhadap harga domestik.
+- **Commodity Link**: Menghubungkan harga minyak dunia (Brent) dengan inflasi transportasi.
+
+**Metrik Performa (Baseline):**
 - **MAE**: 0.1793%
 - **RMSE**: 0.2132%
 - **MAPE**: 7.06%
 
-## 📝 Catatan Penting
-- **Seasonality**: Model ini secara khusus menangani siklus musiman Indonesia seperti lonjakan harga saat Ramadan dan Hari Raya Idul Fitri.
-- **Data Coverage**: Data dimulai dari Januari 2010 untuk memastikan konsistensi indikator makro.
+---
+
+## 🛡️ Keamanan & Privasi
+Proyek ini menggunakan `.gitignore` yang ketat untuk mengabaikan:
+- Data sensitif di `.env`
+- Lingkungan virtual (`venv/`)
+- Log internal agen coding (`.agents/`)
+- Data mentah CSV yang besar.
 
 ---
-**Disclaimer**: Proyek ini ditujukan untuk tujuan edukasi dan analisis data. Keputusan ekonomi harus didasarkan pada sumber resmi pemerintah dan Bank Indonesia.
-# indo-macro-scraper
+**Author**: xafiertect | **Repo**: [indo-macro-scraper](https://github.com/xafiertect/indo-macro-scraper)

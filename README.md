@@ -79,3 +79,4 @@ jupyter lab notebooks/02_eda.ipynb
 
 ---
 **Disclaimer**: Proyek ini ditujukan untuk tujuan edukasi dan analisis data. Keputusan ekonomi harus didasarkan pada sumber resmi pemerintah dan Bank Indonesia.
+# indo-macro-scraper

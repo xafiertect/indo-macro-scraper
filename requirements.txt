@@ -1,0 +1,14 @@
+pandas
+numpy
+requests
+beautifulsoup4
+scikit-learn
+statsmodels
+xgboost
+lightgbm
+matplotlib
+seaborn
+python-dotenv
+lxml
+html5lib
+jupyterlab

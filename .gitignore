@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Data (Ignore raw and large data, but keep structure)
+data/raw/*.csv
+data/processed/*.csv
+data/features/*.csv
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/features/.gitkeep
+
+# IDEs
+.vscode/
+.idea/
+
+# Project Specific
+.agents/
+data/*.png
